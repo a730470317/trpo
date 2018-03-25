@@ -68,6 +68,17 @@ def init_gym(env_name):
 
     return env, obs_dim, act_dim
 
+def if_force_display():
+    try:
+        file_name = 'force_display';
+        f = open('force_display','r')
+        os.putenv('force_display','T')
+        print('file : ' ,file_name,' exist, force render.')
+        f.close()
+        return True
+    except :
+        os.putenv("force_display",'F')
+        return  False
 
 def run_episode(env, policy, scaler, animate=False):
     """ Run single episode with option to animate
@@ -93,7 +104,8 @@ def run_episode(env, policy, scaler, animate=False):
     scale[-1] = 1.0  # don't scale time step feature
     offset[-1] = 0.0  # don't offset time step feature
     while not done:
-        if animate:
+        # print('run_episode.  ', os.getenv('force_display'), ' ', os.environ['force_display'])
+        if animate or os.getenv('force_display')=='T':
             env.render()
         obs = obs.astype(np.float32).reshape((1, -1))
         obs = np.append(obs, [[step]], axis=1)  # add time step feature
@@ -132,7 +144,8 @@ def run_policy(env, policy, scaler, logger, episodes):
     total_steps = 0
     trajectories = []
     for e in range(episodes):
-        observes, actions, rewards, unscaled_obs = run_episode(env, policy, scaler)
+        # print('run policy')
+        observes, actions, rewards, unscaled_obs = run_episode(env, policy, scaler, if_force_display())
         total_steps += observes.shape[0]
         trajectory = {'observes': observes,
                       'actions': actions,
