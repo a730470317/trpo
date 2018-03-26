@@ -70,10 +70,10 @@ def init_gym(env_name):
 
 def if_force_display():
     try:
-        file_name = 'force_display';
-        f = open('force_display','r')
+        file_name = 'force_display.txt';
+        f = open('force_display.txt','r')
         os.putenv('force_display','T')
-        print('file : ' ,file_name,' exist, force render.')
+        print('file: "' ,file_name,'" exist, force render.')
         f.close()
         return True
     except :

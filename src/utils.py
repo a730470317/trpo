@@ -101,6 +101,7 @@ class Logger(object):
         """Print metrics to stdout"""
         log_keys = [k for k in log.keys()]
         log_keys.sort()
+        # print('hello, this is ziv_dev')
         print('***** Episode {}, Mean R = {:.1f} *****'.format(log['_Episode'],
                                                                log['_MeanReward']))
         for key in log_keys:
